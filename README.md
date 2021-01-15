@@ -103,6 +103,8 @@ set(gca,<span class="string">'layer'</span>,<span class="string">'top'</span>)
 
 See code [snowToyLoop.m](https://github.com/sgascoin/snowToy/blob/main/snowToyLoop.m) 
 
+Download video [video.mp4](html/video.mp4) 
+
 ![](html/video.gif)
 
 </div>
