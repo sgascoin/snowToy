@@ -68,7 +68,7 @@ ix=(1:365)+181; <span class="comment">% plot only 1 water year</span>
 snowToyPlot(1,ix,A,t,P,T,Qout,SnowMasstot,colSnow,colRain,colTemp,colDisch);
 </pre>
 
-![](snowToyDemo_01.png)
+![](html/snowToyDemo_01.png)
 
 ## Plot topography and max annual SWE by elev band<a name="5"></a>
 
@@ -76,7 +76,7 @@ snowToyPlot(1,ix,A,t,P,T,Qout,SnowMasstot,colSnow,colRain,colTemp,colDisch);
 snowToyStairs(2,ix,z,swe,colSnow);
 </pre>
 
-![](snowToyDemo_02.png)
+![](html/snowToyDemo_02.png)
 
 ## Plot SWE by elevation<a name="6"></a>
 
@@ -96,7 +96,7 @@ grid
 set(gca,<span class="string">'layer'</span>,<span class="string">'top'</span>)
 </pre>
 
-![](snowToyDemo_03.png)
+![](html/snowToyDemo_03.png)
 
 [Published with MATLAB? R2014b](http://www.mathworks.com/products/matlab/)  
 
