@@ -12,6 +12,7 @@
 *   [Plot some variables](#4)
 *   [Plot topography and max annual SWE by elev band](#5)
 *   [Plot SWE by elevation](#6)
+*   [Simulate the effect of changing topography](#7)
 
 </div>
 
@@ -98,6 +99,10 @@ set(gca,<span class="string">'layer'</span>,<span class="string">'top'</span>)
 
 ![](html/snowToyDemo_03.png)
 
-[Published with MATLAB? R2014b](http://www.mathworks.com/products/matlab/)  
+## Simulate the effect of changing topography<a name="7"></a>
+
+See code [snowToyLoop.m](https://github.com/sgascoin/snowToy/blob/main/snowToyLoop.m) 
+
+![](html/video.gif)
 
 </div>
