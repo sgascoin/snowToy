@@ -17,7 +17,7 @@ t=ft; % computation time vector
 
 Tlr=-0.6e-2; % temp lapse rate in dC/m (-0.6d/100m)
 Plr=0.2e-3; % precip lapse rate in m-1 (0.2 km-1)
-Pmax=10e-3; % max precip rate by timestep (m)
+Pmax=20e-3; % max precip rate by timestep (m)
 aT=20; % temp annual amplitude in dC
 mT0=10; % mean annual temp at z(1) in dC
 
@@ -25,7 +25,7 @@ mT0=10; % mean annual temp at z(1) in dC
 T0=mT0+0.5*aT*cos(2*pi*ft/365+pi);
 
 % daily precip rate in m at z(1) (sinusoid set to zero at 80% random dates)
-P0=Pmax+Pmax*cos((ft-ft(1))*2*pi/length(ft)*2);
+P0=0.5*Pmax+0.5*Pmax*cos(ft*2*pi/365);
 rng(0);
 y=randsample(length(ft),0.8*length(ft));
 P0(y)=0;
@@ -50,7 +50,7 @@ figure(2),clf
 snowToyStairs(2,ix,z,swe,colSnow);
 
 %% Plot SWE by elevation
-figure(2),clf
+figure(3),clf
 iz = 1:nz;
 n=length(iz);
 colSwe=cool(n);

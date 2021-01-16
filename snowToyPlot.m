@@ -39,7 +39,6 @@ set(gca,'layer','top')
 
 % outlet discharge
 subplot 313
-grid
 ha=area(t,1e3*Qout./A);
 set(ha,'facecolor',colDisch,'linestyle','none')
 datetick('x','mmm')
