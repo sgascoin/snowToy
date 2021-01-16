@@ -13,6 +13,7 @@
 *   [Plot topography and max annual SWE by elev band](#5)
 *   [Plot SWE by elevation](#6)
 *   [Simulate the effect of changing topography](#7)
+*   [Simulate the effect of glacier melt](#8)
 
 </div>
 
@@ -101,10 +102,16 @@ set(gca,<span class="string">'layer'</span>,<span class="string">'top'</span>)
 
 ## Simulate the effect of changing topography<a name="7"></a>
 
-See code [snowToyLoop.m](https://github.com/sgascoin/snowToy/blob/main/snowToyLoop.m) 
+See code [snowToyLoop.m](snowToyLoop.m) 
 
 Download video [video.mp4](html/video.mp4) 
 
 ![](html/video.gif)
+
+## Simulate the effect of glacier melt<a name="8"></a>
+
+See code [snowToyDemoWithGlacier.m](snowToyDemoWithGlacier.m) 
+
+![](html/snowToyGlacier.png)
 
 </div>
