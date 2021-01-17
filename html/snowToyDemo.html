@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>snowToyDemo</title><meta name="generator" content="MATLAB 8.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-01-15"><meta name="DC.source" content="snowToyDemo.m"><style type="text/css">
+      --><title>snowToyDemo</title><meta name="generator" content="MATLAB 8.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-01-17"><meta name="DC.source" content="snowToyDemo.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,8 +66,8 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1></h1><!--introduction--><p><b>Snow hydrology toy model</b></p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Model setup</a></li><li><a href="#2">Plot options</a></li><li><a href="#3">Run model</a></li><li><a href="#4">Plot some variables</a></li><li><a href="#5">Plot topography and max annual SWE by elev band</a></li><li><a href="#6">Plot SWE by elevation</a></li></ul></div><h2>Model setup<a name="1"></a></h2><pre class="codeinput">A=10e6; <span class="comment">% catchment area in sq m</span>
-nz=20; <span class="comment">% nb of elev bands</span>
+  </style></head><body><div class="content"><h1></h1><!--introduction--><p><b>Snow hydrology toy model</b></p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Model setup</a></li><li><a href="#2">Plot options</a></li><li><a href="#3">Run model</a></li><li><a href="#4">Plot some variables</a></li><li><a href="#5">Plot topography and max annual SWE by elev band</a></li><li><a href="#6">Plot SWE by elevation</a></li><li><a href="#7">Add glacier</a></li><li><a href="#8">Change topography</a></li><li><a href="#10">Change number of elevation bands</a></li></ul></div><h2>Model setup<a name="1"></a></h2><pre class="codeinput">A=10e6; <span class="comment">% catchment area in sq m</span>
+nz=10; <span class="comment">% nb of elev bands</span>
 zmin=2000; <span class="comment">% elevation of the lowest elev band</span>
 zmax=3500; <span class="comment">% elev of the top band</span>
 
@@ -82,7 +82,7 @@ t=ft; <span class="comment">% computation time vector</span>
 
 Tlr=-0.6e-2; <span class="comment">% temp lapse rate in dC/m (-0.6d/100m)</span>
 Plr=0.2e-3; <span class="comment">% precip lapse rate in m-1 (0.2 km-1)</span>
-Pmax=10e-3; <span class="comment">% max precip rate by timestep (m)</span>
+Pmax=20e-3; <span class="comment">% max precip rate by timestep (m)</span>
 aT=20; <span class="comment">% temp annual amplitude in dC</span>
 mT0=10; <span class="comment">% mean annual temp at z(1) in dC</span>
 
@@ -90,7 +90,7 @@ mT0=10; <span class="comment">% mean annual temp at z(1) in dC</span>
 T0=mT0+0.5*aT*cos(2*pi*ft/365+pi);
 
 <span class="comment">% daily precip rate in m at z(1) (sinusoid set to zero at 80% random dates)</span>
-P0=Pmax+Pmax*cos((ft-ft(1))*2*pi/length(ft)*2);
+P0=0.5*Pmax+0.5*Pmax*cos(ft*2*pi/365);
 rng(0);
 y=randsample(length(ft),0.8*length(ft));
 P0(y)=0;
@@ -101,31 +101,17 @@ colDisch=[203 206 233]/255;
 ix=(1:365)+181; <span class="comment">% plot only 1 water year</span>
 </pre><h2>Run model<a name="3"></a></h2><pre class="codeinput">[P,T,swe,Qout,Qsnowtot,Qglaciertot,Qraintot,SnowMasstot,~]<span class="keyword">...</span>
     = snowToy(A,t,ft,z,T0,Tlr,P0,Plr,gfA);
-</pre><h2>Plot some variables<a name="4"></a></h2><pre class="codeinput">figure(1),clf
-snowToyPlot(1,ix,A,t,P,T,Qout,SnowMasstot,colSnow,colRain,colTemp,colDisch);
-</pre><img vspace="5" hspace="5" src="snowToyDemo_01.png" alt=""> <h2>Plot topography and max annual SWE by elev band<a name="5"></a></h2><pre class="codeinput">figure(2),clf
-snowToyStairs(2,ix,z,swe,colSnow);
-</pre><img vspace="5" hspace="5" src="snowToyDemo_02.png" alt=""> <h2>Plot SWE by elevation<a name="6"></a></h2><pre class="codeinput">figure(2),clf
-iz = 1:nz;
-n=length(iz);
-colSwe=cool(n);
-h=plot(t,swe(iz,:)*1e3);
-<span class="keyword">for</span> i=1:n,set(h(i),<span class="string">'Color'</span>,colSwe(i,:));<span class="keyword">end</span>
-datetick(<span class="string">'x'</span>,<span class="string">'mmm'</span>)
-ylim([0 inf])
-xlim(t(ix([1 end])))
-legend(num2str(round(z(iz))'))
-title(<span class="string">'SWE (mm)'</span>)
-box <span class="string">off</span>
-grid
-set(gca,<span class="string">'layer'</span>,<span class="string">'top'</span>)
-</pre><img vspace="5" hspace="5" src="snowToyDemo_03.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014b</a><br></p></div><!--
+</pre><h2>Plot some variables<a name="4"></a></h2><pre class="codeinput">snowToyPlot(1,ix,A,t,P,T,Qout,SnowMasstot,colSnow,colRain,colTemp,colDisch);
+</pre><img vspace="5" hspace="5" src="snowToyDemo_01.png" alt=""> <h2>Plot topography and max annual SWE by elev band<a name="5"></a></h2><pre class="codeinput">snowToyStairs(2,ix,z,swe,colSnow);
+</pre><img vspace="5" hspace="5" src="snowToyDemo_02.png" alt=""> <h2>Plot SWE by elevation<a name="6"></a></h2><pre class="codeinput">snowToyPlotSwe(3,ix,z,t,swe)
+</pre><img vspace="5" hspace="5" src="snowToyDemo_03.png" alt=""> <h2>Add glacier<a name="7"></a></h2><pre class="codeinput">snowToyDemoWithGlacier
+</pre><img vspace="5" hspace="5" src="snowToyDemo_04.png" alt=""> <img vspace="5" hspace="5" src="snowToyDemo_05.png" alt=""> <h2>Change topography<a name="8"></a></h2><p>with <a href="../snowToyLoop.m">snowToyLoop.m</a> high resolution video file: <a href="video.mp4">video.mp4</a></p><p><img vspace="5" hspace="5" src="video.gif" alt=""> </p><h2>Change number of elevation bands<a name="10"></a></h2><p>with <a href="../snowToyElevBands.m">snowToyElevBands.m</a></p><p><img vspace="5" hspace="5" src="ebvideo.gif" alt=""> </p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %%
 % *Snow hydrology toy model* 
 %% Model setup
 A=10e6; % catchment area in sq m
-nz=20; % nb of elev bands
+nz=10; % nb of elev bands
 zmin=2000; % elevation of the lowest elev band
 zmax=3500; % elev of the top band
 
@@ -140,7 +126,7 @@ t=ft; % computation time vector
 
 Tlr=-0.6e-2; % temp lapse rate in dC/m (-0.6d/100m)
 Plr=0.2e-3; % precip lapse rate in m-1 (0.2 km-1)
-Pmax=10e-3; % max precip rate by timestep (m)
+Pmax=20e-3; % max precip rate by timestep (m)
 aT=20; % temp annual amplitude in dC
 mT0=10; % mean annual temp at z(1) in dC
 
@@ -148,7 +134,7 @@ mT0=10; % mean annual temp at z(1) in dC
 T0=mT0+0.5*aT*cos(2*pi*ft/365+pi);
 
 % daily precip rate in m at z(1) (sinusoid set to zero at 80% random dates)
-P0=Pmax+Pmax*cos((ft-ft(1))*2*pi/length(ft)*2);
+P0=0.5*Pmax+0.5*Pmax*cos(ft*2*pi/365);
 rng(0);
 y=randsample(length(ft),0.8*length(ft));
 P0(y)=0;
@@ -165,27 +151,32 @@ ix=(1:365)+181; % plot only 1 water year
     = snowToy(A,t,ft,z,T0,Tlr,P0,Plr,gfA);
 
 %% Plot some variables
-figure(1),clf
 snowToyPlot(1,ix,A,t,P,T,Qout,SnowMasstot,colSnow,colRain,colTemp,colDisch);
 
 %% Plot topography and max annual SWE by elev band
-figure(2),clf
 snowToyStairs(2,ix,z,swe,colSnow);
 
 %% Plot SWE by elevation
-figure(2),clf
-iz = 1:nz;
-n=length(iz);
-colSwe=cool(n);
-h=plot(t,swe(iz,:)*1e3);
-for i=1:n,set(h(i),'Color',colSwe(i,:));end
-datetick('x','mmm')
-ylim([0 inf])
-xlim(t(ix([1 end])))
-legend(num2str(round(z(iz))'))
-title('SWE (mm)')
-box off
-grid
-set(gca,'layer','top')
+snowToyPlotSwe(3,ix,z,t,swe)
+
+%% Add glacier
+snowToyDemoWithGlacier
+
+%% Change topography 
+% with <../snowToyLoop.m snowToyLoop.m>
+% high resolution video file: <video.mp4 video.mp4>
+%%
+% 
+% <<video.gif>>
+% 
+
+%% Change number of elevation bands 
+% with <../snowToyElevBands.m snowToyElevBands.m>
+%%
+% 
+% <<ebvideo.gif>>
+% 
+
+
 ##### SOURCE END #####
 --></body></html>

@@ -1,10 +1,5 @@
 %% Script to simulate the hydrograph of a changing topography
 
-% enable parallel processing
-if isempty(gcp('nocreate'))
-    parpool(2); % 2 workers
-end
-
 % figure export folders
 outfA=['..' filesep 'figs' filesep 'A' filesep];
 outfB=['..' filesep 'figs' filesep 'B' filesep];

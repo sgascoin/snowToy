@@ -12,15 +12,16 @@
 *   [Plot some variables](#4)
 *   [Plot topography and max annual SWE by elev band](#5)
 *   [Plot SWE by elevation](#6)
-*   [Simulate the effect of changing topography](#7)
-*   [Simulate the effect of glacier melt](#8)
+*   [Add glacier](#7)
+*   [Change topography](#8)
+*   [Change number of elevation bands](#10)
 
 </div>
 
 ## Model setup<a name="1"></a>
 
 <pre class="codeinput">A=10e6; <span class="comment">% catchment area in sq m</span>
-nz=20; <span class="comment">% nb of elev bands</span>
+nz=10; <span class="comment">% nb of elev bands</span>
 zmin=2000; <span class="comment">% elevation of the lowest elev band</span>
 zmax=3500; <span class="comment">% elev of the top band</span>
 
@@ -35,7 +36,7 @@ t=ft; <span class="comment">% computation time vector</span>
 
 Tlr=-0.6e-2; <span class="comment">% temp lapse rate in dC/m (-0.6d/100m)</span>
 Plr=0.2e-3; <span class="comment">% precip lapse rate in m-1 (0.2 km-1)</span>
-Pmax=10e-3; <span class="comment">% max precip rate by timestep (m)</span>
+Pmax=20e-3; <span class="comment">% max precip rate by timestep (m)</span>
 aT=20; <span class="comment">% temp annual amplitude in dC</span>
 mT0=10; <span class="comment">% mean annual temp at z(1) in dC</span>
 
@@ -43,7 +44,7 @@ mT0=10; <span class="comment">% mean annual temp at z(1) in dC</span>
 T0=mT0+0.5*aT*cos(2*pi*ft/365+pi);
 
 <span class="comment">% daily precip rate in m at z(1) (sinusoid set to zero at 80% random dates)</span>
-P0=Pmax+Pmax*cos((ft-ft(1))*2*pi/length(ft)*2);
+P0=0.5*Pmax+0.5*Pmax*cos(ft*2*pi/365);
 rng(0);
 y=randsample(length(ft),0.8*length(ft));
 P0(y)=0;
@@ -66,52 +67,42 @@ ix=(1:365)+181; <span class="comment">% plot only 1 water year</span>
 
 ## Plot some variables<a name="4"></a>
 
-<pre class="codeinput">figure(1),clf
-snowToyPlot(1,ix,A,t,P,T,Qout,SnowMasstot,colSnow,colRain,colTemp,colDisch);
+<pre class="codeinput">snowToyPlot(1,ix,A,t,P,T,Qout,SnowMasstot,colSnow,colRain,colTemp,colDisch);
 </pre>
 
 ![](html/snowToyDemo_01.png)
 
 ## Plot topography and max annual SWE by elev band<a name="5"></a>
 
-<pre class="codeinput">figure(2),clf
-snowToyStairs(2,ix,z,swe,colSnow);
+<pre class="codeinput">snowToyStairs(2,ix,z,swe,colSnow);
 </pre>
 
 ![](html/snowToyDemo_02.png)
 
 ## Plot SWE by elevation<a name="6"></a>
 
-<pre class="codeinput">figure(2),clf
-iz = 1:nz;
-n=length(iz);
-colSwe=cool(n);
-h=plot(t,swe(iz,:)*1e3);
-<span class="keyword">for</span> i=1:n,set(h(i),<span class="string">'Color'</span>,colSwe(i,:));<span class="keyword">end</span>
-datetick(<span class="string">'x'</span>,<span class="string">'mmm'</span>)
-ylim([0 inf])
-xlim(t(ix([1 end])))
-legend(num2str(round(z(iz))'))
-title(<span class="string">'SWE (mm)'</span>)
-box <span class="string">off</span>
-grid
-set(gca,<span class="string">'layer'</span>,<span class="string">'top'</span>)
+<pre class="codeinput">snowToyPlotSwe(3,ix,z,t,swe)
 </pre>
 
 ![](html/snowToyDemo_03.png)
 
-## Simulate the effect of changing topography<a name="7"></a>
+## Add glacier<a name="7"></a>
 
-See code [snowToyLoop.m](snowToyLoop.m) 
+<pre class="codeinput">snowToyDemoWithGlacier
+</pre>
 
-Download video [video.mp4](html/video.mp4) 
+![](html/snowToyDemo_04.png) ![](html/snowToyDemo_05.png)
+
+## Change topography<a name="8"></a>
+
+with [snowToyLoop.m](snowToyLoop.m), high resolution video file: [video.mp4](html/video.mp4)
 
 ![](html/video.gif)
 
-## Simulate the effect of glacier melt<a name="8"></a>
+## Change number of elevation bands<a name="10"></a>
 
-See code [snowToyDemoWithGlacier.m](snowToyDemoWithGlacier.m) 
+with [snowToyElevBands.m](snowToyElevBands.m)
 
-![](html/snowToyGlacier.png)
+![](html/ebvideo.gif)
 
 </div>

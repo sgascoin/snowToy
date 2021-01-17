@@ -2,7 +2,7 @@
 % *Snow hydrology toy model (demo with glacier)*
 %% Model setup
 A=10e6; % catchment area in sq m
-nz=20; % nb of elev bands
+nz=10; % nb of elev bands
 zmin=2000; % elevation of the lowest elev band
 zmax=3500; % elev of the top band
 

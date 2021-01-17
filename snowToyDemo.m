@@ -2,7 +2,7 @@
 % *Snow hydrology toy model* 
 %% Model setup
 A=10e6; % catchment area in sq m
-nz=20; % nb of elev bands
+nz=10; % nb of elev bands
 zmin=2000; % elevation of the lowest elev band
 zmax=3500; % elev of the top band
 
@@ -42,25 +42,29 @@ ix=(1:365)+181; % plot only 1 water year
     = snowToy(A,t,ft,z,T0,Tlr,P0,Plr,gfA);
 
 %% Plot some variables
-figure(1),clf
 snowToyPlot(1,ix,A,t,P,T,Qout,SnowMasstot,colSnow,colRain,colTemp,colDisch);
 
 %% Plot topography and max annual SWE by elev band
-figure(2),clf
 snowToyStairs(2,ix,z,swe,colSnow);
 
 %% Plot SWE by elevation
-figure(3),clf
-iz = 1:nz;
-n=length(iz);
-colSwe=cool(n);
-h=plot(t,swe(iz,:)*1e3);
-for i=1:n,set(h(i),'Color',colSwe(i,:));end
-datetick('x','mmm')
-ylim([0 inf])
-xlim(t(ix([1 end])))
-legend(num2str(round(z(iz))'))
-title('SWE (mm)')
-box off
-grid
-set(gca,'layer','top')
+snowToyPlotSwe(3,ix,z,t,swe)
+
+%% Add glacier
+snowToyDemoWithGlacier
+
+%% Change topography 
+% with <../snowToyLoop.m snowToyLoop.m>
+% high resolution video file: <video.mp4 video.mp4>
+%%
+% 
+% <<video.gif>>
+% 
+
+%% Change number of elevation bands 
+% with <../snowToyElevBands.m snowToyElevBands.m>
+%%
+% 
+% <<ebvideo.gif>>
+% 
+
