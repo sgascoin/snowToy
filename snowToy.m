@@ -39,19 +39,19 @@ end
 % Snow melt discharge by elev band
 Qsnow=bsxfun(@times,abl,az);
 % Total snow melt discharge
-Qsnowtot=sum(Qsnow);
+Qsnowtot=sum(Qsnow,1);
 % Glacier melt discharge by elev band
 Qglacier=bsxfun(@times,gmelt,az);
 % Total glacier melt discharge
-Qglaciertot=sum(Qglacier);
+Qglaciertot=sum(Qglacier,1);
 % Rain discharge by elev band
 Qrain=bsxfun(@times,rain,az);
 % Total rain discharge
-Qraintot=sum(Qrain);
+Qraintot=sum(Qrain,1);
 % swe m3 by elev band
 SnowMass=bsxfun(@times,swe,az);
 % total swe m3
-SnowMasstot=sum(SnowMass);
+SnowMasstot=sum(SnowMass,1);
 
 % transform "surface water input" to discharge using a lumped production function
 Qin = Qsnowtot+Qglaciertot+Qraintot;
